@@ -85,6 +85,8 @@ typedef struct _RobTkDial {
 
 	bool threesixty;
 
+	float angle_offset;
+
 } RobTkDial;
 
 static bool robtk_dial_expose_event (RobWidget* handle, cairo_t* cr, cairo_rectangle_t* ev) {
@@ -146,6 +148,7 @@ static bool robtk_dial_expose_event (RobWidget* handle, cairo_t* cr, cairo_recta
 	} else {
 		ang = (.75 * M_PI) + (1.5 * M_PI) * (d->cur - d->min) / (d->max - d->min);
 	}
+	ang += d->angle_offset * M_PI;
 
 	if ((d->displaymode & 1) == 0) {
 		/* line from center */
@@ -596,6 +599,7 @@ static RobTkDial * robtk_dial_new_with_size(float min, float max, float step,
 	d->bg  = NULL;
 	d->dpat = NULL;
 	d->bg_scale = 1.0;
+	d->angle_offset = 0.0;
 
 	float c_bg[4]; get_color_from_theme(1, c_bg);
 	create_dial_pattern(d, c_bg);
